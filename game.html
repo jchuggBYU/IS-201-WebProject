@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Who's That Pokémon?</title>
   <style>
     body {
@@ -29,7 +29,6 @@
     #pokemon-shadow {
       width: 250px;
       height: 250px;
-      background-image: url('https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png'); /* Change this to the Pokémon shadow image */
       background-size: cover;
       background-position: center;
       margin: 20px auto;
@@ -63,7 +62,7 @@
       font-weight: bold;
       color: #d9534f;
     }
-    
+
     #feedback.correct {
       color: #5bc0de;
     }
@@ -79,78 +78,191 @@
     #return-link:hover {
       text-decoration: underline;
     }
+
+    #info {
+      margin-top: 15px;
+      font-size: 16px;
+      color: #333;
+    }
   </style>
 </head>
 <body>
-
   <a href="scratch.html" id="return-link">Return to Scratch Page</a>
 
   <div id="game-container">
     <h1>Who's That Pokémon?</h1>
     <div id="pokemon-shadow"></div>
-    <input type="text" id="pokemon-input" placeholder="Enter Pokémon name">
+    <input type="text" id="pokemon-input" placeholder="Enter Pokémon name" />
     <button onclick="checkAnswer()">Guess</button>
-    <button onclick="skipPokemon()">Skip</button> <!-- Skip button -->
+    <button onclick="nextPokemon()" id="next-button">Next</button>
     <div id="feedback"></div>
+    <div id="info"></div>
   </div>
 
   <script>
-    // Pokémon data (You can add more Pokémon with shadows and names here)
     const pokemonData = [
-      { name: 'Pikachu', shadowImageUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png' },
-      { name: 'Bulbasaur', shadowImageUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png' },
-      { name: 'Charmander', shadowImageUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png' },
-      { name: 'Squirtle', shadowImageUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/7.png' },
-      { name: 'Jigglypuff', shadowImageUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/39.png' },
-      { name: 'Eevee', shadowImageUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/133.png' },
-      { name: 'Meowth', shadowImageUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/52.png' },
-      { name: 'Pidgey', shadowImageUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/16.png' },
-      { name: 'Rattata', shadowImageUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/19.png' },
-      { name: 'Snorlax', shadowImageUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/143.png' },
-      { name: 'Psyduck', shadowImageUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/54.png' },
-      { name: 'Geodude', shadowImageUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/74.png' },
-      { name: 'Ekans', shadowImageUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/23.png' },
-      { name: 'Ponyta', shadowImageUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/77.png' },
-      { name: 'Magikarp', shadowImageUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/129.png' },
-      { name: 'Zubat', shadowImageUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/41.png' },
+      {
+        name: 'Pikachu',
+        shadowImageUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png',
+        type: 'Electric',
+        pokedex: 25,
+        region: 'Kanto'
+      },
+      {
+        name: 'Bulbasaur',
+        shadowImageUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png',
+        type: 'Grass / Poison',
+        pokedex: 1,
+        region: 'Kanto'
+      },
+      {
+        name: 'Charmander',
+        shadowImageUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png',
+        type: 'Fire',
+        pokedex: 4,
+        region: 'Kanto'
+      },
+      {
+        name: 'Squirtle',
+        shadowImageUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/7.png',
+        type: 'Water',
+        pokedex: 7,
+        region: 'Kanto'
+      },
+      {
+        name: 'Jigglypuff',
+        shadowImageUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/39.png',
+        type: 'Normal / Fairy',
+        pokedex: 39,
+        region: 'Kanto'
+      },
+      {
+        name: 'Eevee',
+        shadowImageUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/133.png',
+        type: 'Normal',
+        pokedex: 133,
+        region: 'Kanto'
+      },
+      {
+        name: 'Meowth',
+        shadowImageUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/52.png',
+        type: 'Normal',
+        pokedex: 52,
+        region: 'Kanto'
+      },
+      {
+        name: 'Pidgey',
+        shadowImageUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/16.png',
+        type: 'Normal / Flying',
+        pokedex: 16,
+        region: 'Kanto'
+      },
+      {
+        name: 'Rattata',
+        shadowImageUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/19.png',
+        type: 'Normal',
+        pokedex: 19,
+        region: 'Kanto'
+      },
+      {
+        name: 'Snorlax',
+        shadowImageUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/143.png',
+        type: 'Normal',
+        pokedex: 143,
+        region: 'Kanto'
+      },
+      {
+        name: 'Psyduck',
+        shadowImageUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/54.png',
+        type: 'Water',
+        pokedex: 54,
+        region: 'Kanto'
+      },
+      {
+        name: 'Geodude',
+        shadowImageUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/74.png',
+        type: 'Rock / Ground',
+        pokedex: 74,
+        region: 'Kanto'
+      },
+      {
+        name: 'Ekans',
+        shadowImageUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/23.png',
+        type: 'Poison',
+        pokedex: 23,
+        region: 'Kanto'
+      },
+      {
+        name: 'Ponyta',
+        shadowImageUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/77.png',
+        type: 'Fire',
+        pokedex: 77,
+        region: 'Kanto'
+      },
+      {
+        name: 'Magikarp',
+        shadowImageUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/129.png',
+        type: 'Water',
+        pokedex: 129,
+        region: 'Kanto'
+      },
+      {
+        name: 'Zubat',
+        shadowImageUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/41.png',
+        type: 'Poison / Flying',
+        pokedex: 41,
+        region: 'Kanto'
+      }
     ];
 
-    let currentPokemon = pokemonData[Math.floor(Math.random() * pokemonData.length)];
+    let currentPokemon = getRandomPokemon();
 
-    // Set the shadow image to the selected Pokémon
-    document.getElementById('pokemon-shadow').style.backgroundImage = `url(${currentPokemon.shadowImageUrl})`;
+    function getRandomPokemon() {
+      return pokemonData[Math.floor(Math.random() * pokemonData.length)];
+    }
+
+    function displayPokemon(pokemon) {
+      document.getElementById('pokemon-shadow').style.backgroundImage = `url(${pokemon.shadowImageUrl})`;
+    }
 
     function checkAnswer() {
       const userInput = document.getElementById('pokemon-input').value.trim().toLowerCase();
       const feedbackElement = document.getElementById('feedback');
+      const infoElement = document.getElementById('info');
 
       if (userInput === currentPokemon.name.toLowerCase()) {
         feedbackElement.textContent = 'Correct!';
         feedbackElement.className = 'correct';
-        // Move to the next Pokémon after correct answer
-        currentPokemon = pokemonData[Math.floor(Math.random() * pokemonData.length)];
-        document.getElementById('pokemon-shadow').style.backgroundImage = `url(${currentPokemon.shadowImageUrl})`;
-        document.getElementById('pokemon-input').value = ''; // Clear the input field
+
+        infoElement.innerHTML = `
+          <p><strong>Name:</strong> ${currentPokemon.name}</p>
+          <p><strong>Type:</strong> ${currentPokemon.type}</p>
+          <p><strong>Pokédex #:</strong> ${currentPokemon.pokedex}</p>
+          <p><strong>Region:</strong> ${currentPokemon.region}</p>
+        `;
       } else {
         feedbackElement.textContent = 'Incorrect';
-        feedbackElement.className = ''; // Don't reset Pokémon after incorrect answer
+        feedbackElement.className = '';
       }
     }
 
-    function skipPokemon() {
-      // Skip to a new Pokémon
-      currentPokemon = pokemonData[Math.floor(Math.random() * pokemonData.length)];
-      document.getElementById('pokemon-shadow').style.backgroundImage = `url(${currentPokemon.shadowImageUrl})`;
-      document.getElementById('pokemon-input').value = ''; // Clear the input field
-      document.getElementById('feedback').textContent = ''; // Clear feedback
+    function nextPokemon() {
+      currentPokemon = getRandomPokemon();
+      displayPokemon(currentPokemon);
+      document.getElementById('pokemon-input').value = '';
+      document.getElementById('feedback').textContent = '';
+      document.getElementById('info').textContent = '';
     }
-    
-    document.getElementById('pokemon-input').addEventListener('keydown', function(event) {
-  if (event.key === 'Enter') {
-    checkAnswer();
-  }
-});
-  </script>
 
+    // Initialize first Pokémon
+    displayPokemon(currentPokemon);
+
+    // Allow enter key to submit
+    document.getElementById('pokemon-input').addEventListener('keydown', function(event) {
+      if (event.key === 'Enter') {
+        checkAnswer();
+      }
+    });
+  </script>
 </body>
 </html>
